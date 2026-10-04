@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Farheen Nisha — Celestial Voyager</title>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cinzel:wght@700&family=Caveat:wght@500&family=Spectral:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070a1a;--bg2:#0f1230;--ink:#ece3cf;--mut:#a9a7b8;--gold:#c9a45c;--wine:#5a1f2e;--moss:#1c3a2e;--line:rgba(201,164,92,.35);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-behavior:smooth;scroll-padding-top:70px;height:auto}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.7 Spectral,Georgia,serif;overflow-x:hidden}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+canvas#sky{position:fixed;inset:0;z-index:0;pointer-events:none}
+main,header,footer,nav{position:relative;z-index:1}
+h1,h2,h3{font-family:'IM Fell English',Georgia,serif;font-weight:400;margin:0}
+h2{font-size:clamp(30px,5vw,52px);margin-bottom:.5em;font-style:italic}
+.lab{font:500 12px Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+a{color:var(--gold)}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+nav{position:sticky;top:0;display:flex;gap:6px 18px;flex-wrap:wrap;justify-content:center;padding:calc(10px + env(safe-area-inset-top,0px)) 12px 10px;background:linear-gradient(var(--bg),transparent);z-index:5}
+nav a{font:500 11px Inter,sans-serif;letter-spacing:.16em;text-decoration:none;color:var(--mut);padding:4px 2px;border-bottom:1px solid transparent}
+nav a:hover{color:var(--gold);border-color:var(--gold)}
+section{max-width:1000px;margin:0 auto;padding:90px 22px}
+.hero{min-height:92vh;display:grid;place-items:center;text-align:center;padding:40px 22px;position:relative}
+.hero h1{font-size:clamp(44px,10vw,112px);letter-spacing:.04em;line-height:1}
+.hero .sub{font:italic clamp(20px,3vw,30px)/1.4 'IM Fell English',serif;color:var(--gold);margin:18px 0}
+.hero p{max-width:560px;margin:0 auto 30px;color:var(--mut)}
+.btn{display:inline-block;border:1px solid var(--gold);padding:12px 26px;text-decoration:none;color:var(--ink);font:500 12px Inter,sans-serif;letter-spacing:.2em;background:rgba(201,164,92,.08);transition:.3s}
+.btn:hover{background:var(--gold);color:var(--bg)}
+.moon{position:absolute;top:8%;right:10%;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#f4ecd8,#b9b29c);box-shadow:0 0 60px rgba(236,227,207,.35);animation:fl 9s ease-in-out infinite}
+.moon::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--bg);transform:translateX(26%)}
+@keyframes fl{50%{transform:translateY(-8px)}}
+.candle{animation:fk 3s infinite}@keyframes fk{50%{opacity:.82}}
+/* about */
+.frag{margin:0 0 34px;max-width:520px;padding:6px 0 6px 22px;border-left:1px solid var(--line)}
+.frag:nth-child(even){margin-left:auto;text-align:right;border-left:0;border-right:1px solid var(--line);padding:6px 22px 6px 0}
+.frag.big{font:italic 26px/1.4 'IM Fell English',serif;color:var(--gold)}
+/* constellation */
+.cons{position:relative;height:520px;margin:20px 0;border:1px solid var(--line);background:radial-gradient(circle,var(--bg2),transparent 75%)}
+.cons svg{position:absolute;inset:0;width:100%;height:100%}
+.core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:italic 24px 'IM Fell English',serif;color:var(--gold);text-shadow:0 0 20px var(--gold)}
+.node{position:absolute;transform:translate(-50%,-50%);background:none;border:0;color:var(--ink);font:500 11px Inter,sans-serif;letter-spacing:.1em;cursor:pointer;padding:12px 8px;text-align:center}
+.node::before{content:"";display:block;width:9px;height:9px;margin:0 auto 6px;border-radius:50%;background:var(--ink);box-shadow:0 0 10px var(--ink);transition:.3s}
+.node:hover::before,.node:focus-visible::before,.node.on::before{background:var(--gold);box-shadow:0 0 22px 5px var(--gold);transform:scale(1.5)}
+#tip{min-height:3.4em;text-align:center;font:italic 21px 'IM Fell English',serif;color:var(--gold);margin-top:14px}
+/* notes */
+.board{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:26px;padding:24px;background:repeating-linear-gradient(45deg,#1a1410,#1a1410 6px,#1d1712 6px,#1d1712 12px);border:1px solid var(--line)}
+.note{background:#e9dcbc;color:#2a2118;padding:22px 18px;font:500 24px/1.25 Caveat,cursive;box-shadow:3px 6px 14px #0008;transition:transform .3s}
+.note:nth-child(odd){transform:rotate(-2deg)}.note:nth-child(even){transform:rotate(1.8deg)}
+.note:hover{transform:rotate(0) scale(1.03)}
+/* artifacts */
+details.file{border:1px solid var(--line);margin-bottom:16px;background:linear-gradient(120deg,rgba(90,31,46,.35),rgba(15,18,48,.6))}
+details summary{cursor:pointer;padding:18px 22px;list-style:none;display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+details summary::-webkit-details-marker{display:none}
+details summary h3{font-size:26px}
+details[open] .body{animation:unf .5s ease}
+@keyframes unf{from{opacity:0;transform:scaleY(.9);transform-origin:top}}
+.body{padding:4px 22px 22px;color:var(--mut)}.body b{color:var(--ink);font-weight:500}
+.tag{display:inline-block;border:1px solid var(--line);padding:1px 9px;margin:3px 3px 0 0;font:12px Inter,sans-serif;color:var(--ink)}
+.ph{border:1px dashed var(--gold);padding:2px 8px;color:var(--gold);font:12px Inter,sans-serif}
+/* tools */
+#q{width:100%;max-width:340px;background:transparent;border:1px solid var(--line);color:var(--ink);padding:10px 14px;font:15px Inter,sans-serif;margin-bottom:22px}
+.shelf{margin-bottom:22px;padding-bottom:10px;border-bottom:3px double var(--line)}
+.shelf h3{font-size:20px;color:var(--gold);margin-bottom:8px}
+.obj{display:inline-block;position:relative;margin:4px;padding:8px 14px;background:#161a3a;border:1px solid var(--line);font:14px Inter,sans-serif;cursor:help}
+.obj[hidden]{display:none}
+.obj:hover::after,.obj:focus::after{content:attr(data-t);position:absolute;bottom:115%;left:0;background:var(--ink);color:#1a1410;padding:5px 9px;font-size:12px;white-space:nowrap;z-index:3}
+/* logs */
+.log{display:grid;grid-template-columns:150px 1fr;gap:20px;border-top:1px solid var(--line);padding:22px 0}
+.log h3{font-size:24px}.log ul{margin:8px 0 0;padding-left:20px;color:var(--mut)}
+@media(max-width:620px){.log{grid-template-columns:1fr}.frag,.frag:nth-child(even){text-align:left;margin-left:0;border-right:0;border-left:1px solid var(--line);padding:6px 0 6px 18px}.cons{height:480px}.moon{width:44px;height:44px}}
+.stamp{border:2px solid var(--wine);color:#d98a9d;display:inline-block;padding:2px 12px;transform:rotate(-4deg);font:500 12px Inter,sans-serif;letter-spacing:.15em}
+/* gh */
+#gh{width:100%;height:130px;display:block}
+/* rooms */
+.rooms{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
+.rooms button{background:none;border:1px solid var(--line);color:var(--ink);padding:9px 18px;font:500 12px Inter,sans-serif;letter-spacing:.14em;cursor:pointer}
+.rooms button[aria-selected=true]{background:var(--gold);color:var(--bg)}
+.panel{display:none;border:1px solid var(--line);padding:22px}.panel.on{display:block;animation:unf .5s}
+.gal{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-top:14px}
+.gal div{aspect-ratio:4/3;border:1px dashed var(--gold);display:grid;place-items:center;font:12px Inter,sans-serif;color:var(--gold);text-align:center;padding:6px}
+.books{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.book{width:150px;min-height:200px;padding:16px 12px;background:linear-gradient(90deg,#0004 0 8px,var(--moss) 8px);border:1px solid var(--line);font:italic 18px/1.25 'IM Fell English',serif;text-decoration:none;color:var(--ink);display:flex;flex-direction:column;justify-content:space-between;transition:transform .4s;transform-origin:left}
+.book:nth-child(2n){background:linear-gradient(90deg,#0004 0 8px,var(--wine) 8px)}
+.book:hover{transform:perspective(500px) rotateY(-18deg)}
+.castle{position:absolute;left:0;right:0;bottom:0;width:100%;height:60%;opacity:.8;pointer-events:none}.hero>div:last-child{position:relative}
+#gate{position:fixed;inset:0;z-index:40;display:none;pointer-events:none}#gate.go{display:flex}#gate i{flex:1;background:#0b0d22 linear-gradient(90deg,#0000,rgba(201,164,92,.25));border:1px solid var(--gold);animation:op 1.4s ease-in forwards}#gate i+i{animation-name:op2}
+@keyframes op{to{transform:translateX(-102%)}}@keyframes op2{to{transform:translateX(102%)}}
+.phases{display:flex;gap:16px;margin-top:20px}.phases i{width:34px;height:34px;border-radius:50%;background:#ece3cf;box-shadow:inset 0 0 0 1px #0006}
+.phases i:nth-child(1){background:#1a1d3a;box-shadow:0 0 0 1px var(--line)}.phases i:nth-child(2){background:linear-gradient(90deg,#1a1d3a 55%,#ece3cf 55%)}.phases i:nth-child(4){background:linear-gradient(90deg,#ece3cf 55%,#1a1d3a 55%)}
+.shelf2{border-bottom:8px solid #3a2616;padding:10px 0 0;margin-bottom:22px}.shelf2 h3{font-size:20px;color:var(--gold)}.shelf2 .books{padding-bottom:0}
+.rh-step{border-left:1px solid var(--gold);padding:2px 0 14px 16px;margin-left:8px;color:var(--mut)}.rh-step b{color:var(--ink);font-weight:500}
+#intro{position:fixed;inset:0;z-index:100;background:radial-gradient(circle at 78% 14%,rgba(190,205,240,.22),transparent 22%),radial-gradient(ellipse at 50% 100%,#10132e,#03040c 70%);transition:opacity 1.3s ease;overflow:hidden}
+#intro.out{opacity:0;pointer-events:none}#intro,#intro *{cursor:auto!important}
+#intro canvas{position:absolute;inset:0}#intro .ic{position:absolute;left:0;bottom:0;width:100%;height:55%;opacity:0;transition:opacity 2.5s}#intro.lit .ic{opacity:.3}#intro.flash .ic{opacity:.95}
+#scene{position:absolute;inset:0;transform-origin:50% 100%;will-change:transform}#intro .ic{filter:blur(1px)}#wiz{position:absolute;bottom:0;opacity:0;transition:opacity 2.2s;animation:sway 5s ease-in-out infinite alternate;transform-origin:50% 100%}@keyframes sway{to{transform:skewX(-1.5deg)}}.wiz #wiz{opacity:1}
+#itxt{position:absolute;inset:0;display:grid;align-content:center;justify-items:center;text-align:center;font:700 clamp(18px,4vw,34px)/1.5 Calibri,Arial,sans-serif;color:#ecd9a6;pointer-events:none}
+#itxt span{opacity:0;transition:opacity 1.3s var(--d),letter-spacing 2.5s var(--d);letter-spacing:.05em}.txt #itxt span{opacity:1;letter-spacing:.35em}
+#itxt .g{font-size:clamp(34px,8vw,84px);color:#f0d38a;text-shadow:0 0 28px #c9a45c,0 0 60px #c9a45c88}
+#fl{position:absolute;left:50%;top:42%;width:60vmax;height:60vmax;margin:-30vmax;border-radius:50%;background:radial-gradient(circle,#fff4cf,#e3b866 30%,transparent 65%);transform:scale(0);opacity:0}.flash #fl{transform:scale(3.2);opacity:1;transition:transform 1s ease-in,opacity .3s}
+#skip{position:absolute;right:16px;bottom:calc(14px + env(safe-area-inset-bottom,0px));background:none;border:0;color:#a9a7b8;font:12px Inter,sans-serif;letter-spacing:.15em;opacity:.6;z-index:3;padding:8px}#skip:hover{opacity:1}
+#hint{position:fixed;bottom:28px;left:0;right:0;text-align:center;font:italic 20px 'IM Fell English',serif;color:var(--gold);opacity:0;pointer-events:none;z-index:60}#hint.show{animation:ht 4.5s ease}@keyframes ht{20%,70%{opacity:1}}
+.between{text-align:center;padding:140px 22px;background:linear-gradient(var(--bg),#1a0f1c 30%,#0b1a1a 65%,var(--bg))}
+.between p{font:italic clamp(22px,4vw,38px)/1.5 'IM Fell English',serif;margin:.6em auto;max-width:720px}
+.between p:nth-child(1){color:#d9c9a0}.between p:nth-child(2){color:#b7c3e8}.between p:nth-child(3){color:#e0b3bd}.between p:nth-child(4){color:#a8d6c1}
+/* mind */
+#mind{width:100%;height:auto;max-height:520px;border:1px solid var(--line);background:radial-gradient(var(--bg2),transparent 80%)}
+#mind g{cursor:pointer}#mind text{fill:var(--ink);font:12px Inter,sans-serif;text-anchor:middle}
+#mind g:hover circle,#mind g:focus circle,#mind g.on circle{fill:var(--gold)}
+footer{text-align:center;padding:100px 22px 60px;border-top:1px solid var(--line);max-width:760px;margin:0 auto}
+footer h2{font-size:clamp(36px,6vw,64px)}
+footer .links{display:flex;gap:8px 22px;flex-wrap:wrap;justify-content:center;margin:26px 0}
+#cur{position:fixed;width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 14px 4px var(--gold);pointer-events:none;z-index:50;transform:translate(-50%,-50%);opacity:0;transition:width .2s,height .2s}
+@media(pointer:fine){body.m{cursor:none}body.m a,body.m button,body.m summary{cursor:none}}
+</style></head><body>
+<canvas id="sky" aria-hidden="true"></canvas><div id="cur" aria-hidden="true"></div>
+<div id="intro" role="dialog" aria-label="Opening animation"><div id="scene"><svg id="wiz" viewBox="0 0 200 320" aria-hidden="true"><defs><linearGradient id="cl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#05060d"/><stop offset=".7" stop-color="#0b0d18"/><stop offset="1" stop-color="#1a1a24"/></linearGradient></defs><path d="M100 14C80 14 70 34 72 56C72 66 70 74 62 80C40 96 34 150 28 320H178C172 190 160 110 138 82C130 74 128 66 128 56C130 34 120 14 100 14Z" fill="url(#cl)"/><path d="M86 90C84 170 78 250 70 320M112 86C116 170 122 250 134 320M100 100C100 190 100 260 100 320" stroke="#000" stroke-opacity=".5" stroke-width="3" fill="none"/><path d="M128 56C130 34 120 14 100 14" stroke="rgba(200,215,255,.35)" stroke-width="1.5" fill="none"/><path d="M130 84Q160 80 162 108" stroke="#0a0b15" stroke-width="16" stroke-linecap="round" fill="none"/><circle cx="162" cy="108" r="6" fill="#2a1d18"/></svg></div><canvas id="ic"></canvas><div id="itxt" aria-live="polite"><span style="--d:0s">L E T</span><span style="--d:.5s">THE MAGIC OF</span><span class="g" style="--d:1s">CURIOSITY</span><span style="--d:1.6s">BEGIN</span></div><div id="fl"></div><button id="skip">Skip →</button></div><button id="rp" style="position:fixed;left:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:60;background:rgba(7,10,26,.7);border:1px solid var(--line);color:var(--gold);font:12px Inter,sans-serif;padding:7px 12px;cursor:pointer">✨ Replay the magic</button><div id="hint">Every question opens another door.</div>
+<nav aria-label="Sections"><a href="#top">THE CASTLE</a><a href="#about">JOURNAL</a><a href="#curious">CURIOSITIES</a><a href="#obs">OBSERVATORY</a><a href="#library">LIBRARY</a><a href="#projects">LABORATORY</a><a href="#rooms">STUDIO</a><a href="#writing">WRITING ROOM</a><a href="#cabinet">CABINET</a><a href="#contact">GUEST ROOM</a></nav>
+<div id="gate" aria-hidden="true"><i></i><i></i></div><header class="hero" id="top"><svg class="castle" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs><linearGradient id="ms" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#070a1a" stop-opacity="0"/><stop offset="1" stop-color="#1b2040" stop-opacity=".9"/></linearGradient></defs>
+<path d="M0 400V270l120-60 90 50 130-80 100 70 120-40V400z" fill="#0c1030"/><path d="M700 400V280l120-70 100 60 110-90 170 100V400z" fill="#0a0d28"/>
+<g fill="#0e1228"><rect x="470" y="190" width="260" height="210"/><rect x="450" y="120" width="34" height="280"/><polygon points="445,120 467,50 489,120"/><rect x="530" y="90" width="30" height="120"/><polygon points="525,90 545,20 565,90"/><rect x="640" y="130" width="40" height="270"/><polygon points="634,130 660,40 686,130"/><rect x="705" y="170" width="30" height="230"/><polygon points="700,170 720,100 740,170"/><rect x="590" y="60" width="26" height="140"/><polygon points="586,60 603,10 620,60"/><rect x="330" y="300" width="150" height="14"/><rect x="730" y="290" width="140" height="14"/><rect x="560" y="10" width="0" height="0"/></g>
+<g fill="#e3b866" class="candle"><rect x="456" y="150" width="6" height="12"/><rect x="540" y="130" width="6" height="12"/><rect x="654" y="170" width="6" height="12"/><rect x="598" y="100" width="5" height="10"/><rect x="714" y="200" width="5" height="10"/><rect x="520" y="230" width="6" height="10"/><rect x="580" y="240" width="6" height="10"/><rect x="620" y="230" width="6" height="10"/><rect x="680" y="240" width="6" height="10"/></g>
+<path d="M0 400V350l80-30 60 25 70-30 80 35V400zM900 400V340l90-40 70 30 80-20 60 40V400z" fill="#08140f"/><rect y="300" width="1200" height="100" fill="url(#ms)"/></svg><div class="moon" aria-hidden="true"></div><div>
+<div class="lab">Celestial Voyager</div>
+<h1 class="candle">Farheen Nisha</h1>
+<div class="sub">Somewhere between science and imagination.</div>
+<p>A curious mind exploring technology, space, books, art, ideas and everything in between.</p>
+<button class="btn" id="enter">ENTER MY WORLD</button> <a class="btn" href="#about">WHO AM I?</a></div></header>
+
+<section id="about"><h2>The Journal</h2><p class="lab" style="text-transform:none;font-size:15px">The person behind all the questions.</p><p style="font:26px Caveat,cursive;color:var(--gold);transform:rotate(-2deg)">(notes in the margin: why? how? what if?)</p>
+<p class="frag big">I'm someone who is endlessly curious.</p>
+<p class="frag">I like asking questions, exploring unfamiliar ideas, learning things just because they caught my attention, and following a thought far beyond where it originally started.</p>
+<p class="frag">I'm currently pursuing my B.Tech in Artificial Intelligence &amp; Machine Learning, but I don't think of learning as something that belongs only inside a classroom.</p>
+<p class="frag big">For me, learning can begin anywhere.</p>
+<p class="frag">A book, a photograph, a conversation, a painting, a scientific question, a random thought at midnight, or simply looking at the sky and wondering how much we still don't know.</p><p class="frag big">Science × Technology × Creativity × Imagination</p><p class="frag">I'm still figuring out where that curiosity will take me.</p></section>
+
+<section id="curious"><h2>What keeps me curious</h2>
+<div class="cons" id="cons"><svg id="lines" aria-hidden="true"></svg><div class="core">Curiosity</div></div>
+<div id="tip" aria-live="polite">Touch a star.</div>
+
+<h2 style="margin-top:80px">Currently wondering</h2>
+<div class="board" id="wall"></div></section>
+
+<section id="projects"><h2>The Laboratory</h2><p style="color:var(--mut);font-style:italic">Where curiosity becomes something I can build. Curiosity, experiment, build, learn.</p>
+<details class="file" open><summary><h3>EcoConnect</h3><span class="lab">Experiment 001</span></summary><div class="body">
+<p><b>Question:</b> <span class="ph">PLACEHOLDER: the question behind it</span></p><p><b>What I learned:</b> <span class="ph">PLACEHOLDER</span></p><p><b>Problem:</b> <span class="ph">PLACEHOLDER: add what it solves</span></p><p><b>Why I built it:</b> <span class="ph">PLACEHOLDER</span></p><p><b>Outcome:</b> <span class="ph">PLACEHOLDER</span></p>
+<span class="tag">Add stack</span><p><a href="https://github.com/celestial-cyber">GITHUB</a> · <span class="ph">VIEW PROJECT link</span></p></div></details>
+<details class="file"><summary><h3>Network Intrusion Detection (NIDS)</h3><span class="lab">Experiment 002</span></summary><div class="body"><p><b>Domain:</b> AI/ML meets cybersecurity.</p><p><span class="ph">PLACEHOLDER: problem, method, results, links</span></p></div></details>
+<details class="file"><summary><h3>More artifacts</h3><span class="lab">Uncatalogued</span></summary><div class="body"><p><span class="ph">PLACEHOLDER: web development and automation projects go here. Edit the HTML or move to a data file.</span></p></div></details>
+
+<h2 style="margin-top:70px">Tools of the trade</h2>
+<input id="q" type="search" placeholder="Search the shelves" aria-label="Search tools"><div id="shelves"></div>
+
+<h2 style="margin-top:70px">Experiment log</h2>
+<div class="log"><div class="lab">Experiment 01</div><div><h3>Conscript Digital Operations Intern</h3><ul><li>Worked with 20,000+ college records</li><li>Reduced manual effort by approximately 70%</li><li>Automated document categorization</li><li>Generated 84 categorized Word documents</li></ul></div></div>
+
+<h2 style="margin-top:70px">Where the journey started</h2>
+<div class="log"><div class="lab">2023–2027</div><div><h3>B.Tech, Artificial Intelligence &amp; Machine Learning</h3><p style="margin:6px 0;color:var(--mut)">St. Peter's Engineering College · JNTU Hyderabad</p></div></div>
+
+<h2 style="margin-top:70px">Field notes</h2>
+<p class="stamp">PLACEHOLDER</p><p style="color:var(--mut)">Hackathons, certifications and milestones will be stamped here once added.</p></section>
+
+<section id="github"><h2>Constellation of commits</h2>
+<svg id="gh" viewBox="0 0 520 130" role="img" aria-label="Decorative star map standing in for GitHub contribution activity. Placeholder data."></svg>
+<p style="color:var(--mut)">Static sample pattern, not live data. Swap in real contributions later. <a href="https://github.com/celestial-cyber">github.com/celestial-cyber</a></p></section>
+
+<section id="rooms"><h2>The Studio</h2><p style="color:var(--mut);font-style:italic">Pinned photographs, sketches and paintings. Placeholders until real work is added.</p>
+<div class="rooms" role="tablist" aria-label="Rooms"></div><div id="panels"></div></section>
+
+<section id="obs"><h2>The Observatory</h2><p style="color:var(--mut);font-style:italic">Not an astrophysicist. Just someone who keeps looking up.</p>
+<div class="phases" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><h3 class="lab" style="margin:26px 0 8px">Things I want to understand</h3><div class="board" id="want"></div>
+<h3 class="lab" style="margin:26px 0 8px">Things I have discovered</h3><div class="gal" id="disc"></div></section>
+<section id="library"><h2>The Library</h2><p style="color:var(--mut);font-style:italic">Books on shelves. Open one to see what it made me think.</p><div id="shelves2"></div><div class="panel on" id="bk" aria-live="polite"></div></section>
+<section id="writing"><h2>The Writing Room</h2><p style="color:var(--mut)">Poems, thoughts, observations, stories. Longer pieces live in <a href="https://curiousmindtales.blogspot.com/">Curious Mind Tales</a>.</p><div class="books" id="wr"></div></section>
+<section id="cabinet"><h2>Cabinet of Curiosities</h2><p style="color:var(--mut);font-style:italic">Things I probably didn't need to know, but now absolutely had to.</p><div class="gal" id="cab"></div></section>
+<section id="holes"><h2>Rabbit holes</h2><p style="color:var(--mut);font-style:italic">One question, ten tabs, an entirely new subject.</p><div id="rh"></div></section>
+
+<div class="between"><p>I'm somewhere between a reader and a creator.</p><p>Between science and imagination.</p><p>Between asking questions and trying to find answers.</p><p>Between looking at the world as it is and wondering what it could become.</p></div>
+
+<section id="mind"><h2>Map of a curious mind</h2>
+<svg id="mind" viewBox="0 0 600 440" aria-label="Mind map"></svg><div id="mtip" style="text-align:center;font:italic 20px 'IM Fell English',serif;color:var(--gold);min-height:2.6em;margin-top:12px" aria-live="polite">Select a node.</div></section>
+
+<footer id="contact"><div style="border:1px solid var(--line);padding:24px;margin-bottom:60px"><h3 style="font-size:26px">Looking for the professional version?</h3><p style="color:var(--mut)">Curiosity is one side of me. Building is another.</p><a class="btn" href="https://celestialvoyagerportfolio.vercel.app/">VISIT MY PROFESSIONAL PORTFOLIO</a></div><h2>Still curious?</h2><p style="font-style:italic;color:var(--mut)">There's probably another rabbit hole somewhere.</p>
+<div class="links"><a href="https://celestialvoyagerportfolio.vercel.app/">Professional portfolio</a><a href="https://github.com/celestial-cyber">GitHub</a><a href="https://linkedin.com/in/farheennisha">LinkedIn</a><a href="https://curiousmindtales.blogspot.com/">Curious Mind Tales</a><a href="#contact">Email (add address)</a><a href="#" id="replay">✨ Replay the magic</a></div>
+<p class="sub" style="font:italic 22px 'IM Fell English',serif;color:var(--gold)">Stay curious. Keep questioning. Keep exploring.</p></footer>
+
+<script>
+const $=s=>document.querySelector(s),NS='http://www.w3.org/2000/svg';
+const rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
+/* sky */
+const cv=$('#sky'),cx=cv.getContext('2d');let W,H,st=[],sh=null;
+function rs(){W=cv.width=innerWidth;H=cv.height=innerHeight;st=Array.from({length:Math.min(160,W/6)},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.2,p:Math.random()*6,d:Math.random()*.15+.03}))}
+addEventListener('resize',rs);rs();
+function draw(t){cx.clearRect(0,0,W,H);const sy=scrollY*.05;
+for(const s of st){cx.globalAlpha=.4+.4*Math.sin(t/1200+s.p);cx.fillStyle='#ece3cf';cx.beginPath();cx.arc(s.x,(s.y-sy*s.r*4+H*5)%H,s.r,0,7);cx.fill();if(!rm)s.x=(s.x+s.d*.2)%W}
+if(!rm&&!sh&&Math.random()<.002)sh={x:Math.random()*W,y:Math.random()*H/2,l:0};
+if(sh){cx.globalAlpha=1-sh.l/60;cx.strokeStyle='#ece3cf';cx.beginPath();cx.moveTo(sh.x,sh.y);cx.lineTo(sh.x-30,sh.y-12);cx.stroke();sh.x+=9;sh.y+=3.6;if(++sh.l>60)sh=null}
+if(!rm)requestAnimationFrame(draw)}
+requestAnimationFrame(draw);if(rm)draw(0);
+/* cursor */
+const cu=$('#cur');if(matchMedia('(pointer:fine)').matches){document.body.classList.add('m');
+addEventListener('mousemove',e=>{cu.style.opacity=1;cu.style.left=e.clientX+'px';cu.style.top=e.clientY+'px'});
+document.addEventListener('mouseover',e=>{const on=e.target.closest('a,button,summary,.node,g');cu.style.width=cu.style.height=on?'18px':'8px'})}
+/* constellation */
+const ints=[['Random Questions','The ones that arrive at midnight.'],['Ideas','Half-formed, kept anyway.'],['Learning','Reason enough on its own.'],['Night Sky','Where most of the wondering starts.'],['Artificial Intelligence','Teaching machines to learn, and learning what that even means.'],['Cybersecurity','Thinking like the one who breaks in, to build what keeps them out.'],['Space','Probably the biggest rabbit hole of them all.'],['Astrophysics','The universe, with equations.'],['Science','Asking why until something gives an answer.'],['Science Fiction','Tomorrow, tried on early.'],['Books','Stories, ideas, imaginary worlds, and authors who make me forget I\'m reading.'],['Art','Creating simply because I feel like it.'],['Photography','Small moments in ordinary places.'],['Writing','Turning loose thoughts into something that stays.']];
+const cons=$('#cons'),ln=$('#lines');
+function layout(){ln.innerHTML='';cons.querySelectorAll('.node').forEach(n=>n.remove());const w=cons.clientWidth,h=cons.clientHeight,rx=w*.4,ry=h*.38;
+ints.forEach((it,i)=>{const a=i/ints.length*6.283-1.57,x=w/2+Math.cos(a)*rx,y=h/2+Math.sin(a)*ry;
+const l=document.createElementNS(NS,'line');l.setAttribute('x1',w/2);l.setAttribute('y1',h/2);l.setAttribute('x2',x);l.setAttribute('y2',y);l.setAttribute('stroke','rgba(201,164,92,.18)');ln.append(l);
+const b=document.createElement('button');b.className='node';b.textContent=it[0];b.style.left=x+'px';b.style.top=y+'px';
+const on=()=>{$('#tip').textContent=it[0]+': '+it[1];l.setAttribute('stroke','#c9a45c');b.classList.add('on')};
+const off=()=>{l.setAttribute('stroke','rgba(201,164,92,.18)');b.classList.remove('on')};
+b.onmouseenter=b.onfocus=on;b.onmouseleave=b.onblur=off;b.onclick=on;cons.append(b)})}
+layout();addEventListener('resize',layout);
+/* tools */
+const T={Languages:['Python','Java','C++','C'],'AI / ML':['TensorFlow','Keras','Scikit-learn','Pandas','NumPy'],Web:['HTML','CSS','JavaScript','React','Tailwind','PHP'],Data:['SQL','MySQL','Firebase'],Tools:['Git','VS Code','Jupyter','Google Colab','Kaggle']};
+const sv=$('#shelves');for(const k in T){const d=document.createElement('div');d.className='shelf';d.innerHTML='<h3>'+k+'</h3>'+T[k].map(x=>`<span class="obj" tabindex="0" data-t="${x}: add how you use it">${x}</span>`).join('');sv.append(d)}
+$('#q').oninput=e=>{const v=e.target.value.toLowerCase();document.querySelectorAll('.obj').forEach(o=>o.hidden=!o.textContent.toLowerCase().includes(v))};
+/* github stars (sample) */
+const g=$('#gh');let s='',r=7;for(let c=0;c<52;c++)for(let y=0;y<7;y++){r=(r*9301+49297)%233280;const v=r/233280;if(v>.55)s+=`<circle cx="${c*10+5}" cy="${y*18+8}" r="${v>.85?3:1.6}" fill="#ece3cf" opacity="${.3+v*.6}"/>`}
+g.innerHTML=s;
+/* rooms */
+const R={Painting:'A gallery of paintings.',Sketching:'Drawings and sketches.',Photography:'Small moments captured in ordinary places.','Digital Art':'Anything made on a screen.'};
+const tb=$('.rooms'),pn=$('#panels');Object.keys(R).forEach((k,i)=>{const b=document.createElement('button');b.textContent=k.toUpperCase();b.setAttribute('role','tab');b.setAttribute('aria-selected',i==0);
+const p=document.createElement('div');p.className='panel'+(i?'':' on');p.innerHTML=`<p>${R[k]}</p><div class="gal">${[1,2,3].map(n=>`<div>Placeholder ${k.toLowerCase()} ${n}</div>`).join('')}</div>`;
+b.onclick=()=>{tb.querySelectorAll('button').forEach(x=>x.setAttribute('aria-selected',false));b.setAttribute('aria-selected',true);pn.querySelectorAll('.panel').forEach(x=>x.classList.remove('on'));p.classList.add('on')};tb.append(b);pn.append(p)});
+/* mind map */
+const M=[['Curiosity',300,40,'Where everything begins.'],['Questions',300,130,'Every rabbit hole starts with one.'],['Exploration',300,220,'Following the thought further than planned.'],['Discovery',300,310,'The small wins that make it worth it.'],['Science',90,220,'Asking why.'],['Space',90,310,'Looking up.'],['Art',90,400,'Making for the sake of it.'],['Reading',510,220,'Borrowed worlds.'],['Writing',510,310,'Keeping thoughts from drifting.'],['Technology',510,400,'Where ideas become tangible.'],['Creativity',300,400,'The thread through all of it.']];
+const E=[[0,1],[1,2],[2,3],[2,4],[2,5],[2,6],[2,7],[2,8],[2,9],[3,10]];const mm=$('#mind');
+mm.innerHTML=E.map(([a,b])=>`<line x1="${M[a][1]}" y1="${M[a][2]}" x2="${M[b][1]}" y2="${M[b][2]}" stroke="rgba(201,164,92,.35)"/>`).join('')+M.map((n,i)=>`<g tabindex="0" role="button" data-i="${i}"><circle cx="${n[1]}" cy="${n[2]}" r="9" fill="#ece3cf"/><text x="${n[1]}" y="${n[2]+26}">${n[0]}</text></g>`).join('');
+mm.querySelectorAll('g').forEach(g=>{const f=()=>{mm.querySelectorAll('g').forEach(x=>x.classList.remove('on'));g.classList.add('on');const n=M[g.dataset.i];$('#mtip').textContent=n[0]+': '+n[3]};g.onclick=f;g.onkeydown=e=>{if(e.key=='Enter'||e.key==' '){e.preventDefault();f()}}});
+
+const D={q:["How intelligent can machines become?","How much of the universe do we still not understand?","Could life exist somewhere else?","What happens inside a black hole?","How will humans and AI change each other?","Why does creativity work the way it does?","What would a civilization around another star look like?","What are we still completely wrong about?"],
+shelves:["Currently Reading","Finished","Want To Read","Books That Changed How I Think","Science Fiction","Favourite Ideas"],
+writing:["Poem","Observation","Story","Essay"],
+cab:[["Fact","Add a strange scientific fact"],["Website","Add an interesting website"],["Quote","Add a quote"],["Obsession","Add something you became obsessed with"],["Invention","Add an invention"],["History","Add a historical fact"]],
+disc:["Add something you learned about the night sky","Add an observation","Add a photo of the sky"],
+holes:[{t:"Black holes",steps:[["Started with","What exactly is a black hole?"],["Learned about","Gravity"],["Then","Event horizons"],["Then","Hawking radiation"],["Then","The information paradox"],["Then somehow","Quantum mechanics"]]}]};
+const ph=t=>`<span class="ph">${t}</span>`;
+$('#wall').innerHTML=D.q.map(x=>`<div class="note">${x}</div>`).join('');
+$('#want').innerHTML=D.q.slice(1,4).map(x=>`<div class="note">${x}</div>`).join('');
+$('#disc').innerHTML=D.disc.map(x=>`<div>${x}</div>`).join('');
+$('#cab').innerHTML=D.cab.map(c=>`<div><span>${c[0]}:<br>${c[1]}</span></div>`).join('');
+$('#wr').innerHTML=D.writing.map(w=>`<a class="book" href="https://curiousmindtales.blogspot.com/"><span>${w} title</span><span class="lab">Read (placeholder)</span></a>`).join('');
+$('#rh').innerHTML=D.holes.map(h=>`<h3 style="color:var(--gold);font-size:24px;margin-bottom:10px">${h.t}</h3>`+h.steps.map(x=>`<div class="rh-step"><span class="lab">${x[0]}</span><br><b>${x[1]}</b></div>`).join('')).join('');
+const bk=$('#bk');bk.innerHTML='<p>Select a book on a shelf.</p>';
+$('#shelves2').innerHTML=D.shelves.map((n,i)=>`<div class="shelf2"><h3>${n}</h3><div class="books"><button class="book" data-n="${n}" style="color:var(--ink);text-align:left"><span>Add a book</span><span class="lab">Open</span></button></div></div>`).join('');
+document.querySelectorAll('#shelves2 .book').forEach(b=>b.onclick=()=>{bk.innerHTML=`<h3 style="font-size:26px">${b.dataset.n}: book title</h3><p>${['Author','Genre','Rating','My thoughts','Favourite idea','What it made me think about'].map(f=>`<b>${f}:</b> `+ph('PLACEHOLDER')).join('<br>')}</p>`});
+$('#enter').onclick=()=>{const g=$('#gate');if(rm){location.hash='about';return}g.classList.add('go');setTimeout(()=>{location.hash='about'},500);setTimeout(()=>g.classList.remove('go'),1500)};
+
+(()=>{const I=document.getElementById('intro'),cv=document.getElementById('ic'),c=cv.getContext('2d'),wz=document.getElementById('wiz'),sc=document.getElementById('scene'),q=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const cs=document.querySelector('.castle').cloneNode(true);cs.removeAttribute('id');cs.setAttribute('class','ic');sc.prepend(cs);
+let raf,tm=[],on=false;const T=(f,t)=>tm.push(setTimeout(f,t));
+function end(){if(!on)return;on=false;cancelAnimationFrame(raf);tm.forEach(clearTimeout);tm=[];I.classList.add('out');document.body.style.overflow='';
+try{localStorage.setItem('fn_intro','1')}catch(e){}
+T(()=>{I.style.display='none'},1400);const h=document.getElementById('hint');h.classList.remove('show');void h.offsetWidth;h.classList.add('show')}
+async function play(){on=true;I.style.display='block';I.className='';document.body.style.overflow='hidden';scrollTo(0,0);sc.style.transform='';
+if(q){I.classList.add('txt');wz.style.display='none';T(end,2200);return}
+try{await Promise.race([document.fonts.load("700 80px Cinzel"),new Promise(r=>setTimeout(r,900))])}catch(e){}
+if(!on)return;
+const w=cv.width=innerWidth,h=cv.height=innerHeight,sw=Math.min(300,w*.42),left=w*.08;wz.style.width=sw+'px';wz.style.left=left+'px';
+const hx0=left+sw*.81,hy0=h-sw*1.6*(1-108/320),cx=w>700?w*.6:w*.5,cy=h*.4,R=Math.min(w*(w>700?.3:.46),h*.36);
+const o=document.createElement('canvas');o.width=w;o.height=h;const oc=o.getContext('2d',{willReadFrequently:true}),F="Calibri,Arial,sans-serif",Ls=['LET THE MAGIC OF','CURIOSITY','BEGIN'],wd=[.9,1,.5],tw=R*1.5;
+oc.font='700 100px '+F;const sz=Ls.map((t,i)=>Math.min(110,100*tw*wd[i]/oc.measureText(t).width));
+let y=cy-sz.reduce((a,b)=>a+b)*.5;const pts=[],tl=document.createElement('canvas');tl.width=w;tl.height=h;const lc=tl.getContext('2d'),LI=[];
+Ls.forEach((t,i)=>{y+=sz[i]*1.1;oc.clearRect(0,0,w,h);oc.font=`700 ${sz[i]}px ${F}`;oc.fillStyle='#fff';oc.textAlign='center';oc.fillText(t,cx,y);lc.font=oc.font;lc.textAlign='center';lc.fillStyle='#f6dc9a';lc.shadowColor='#c9a45c';lc.shadowBlur=22;lc.fillText(t,cx,y);lc.shadowBlur=0;lc.fillStyle='#ffeab8';lc.fillText(t,cx,y);
+const d=oc.getImageData(0,0,w,h).data,row=[];for(let yy=Math.max(0,Math.floor(y-sz[i])),e=Math.min(h-1,y+sz[i]*.3);yy<e;yy+=3)for(let xx=0;xx<w;xx+=3)if(d[(yy*w+xx)*4+3]>140)row.push([xx,yy]);row.sort((a,b)=>a[0]-b[0]);if(row.length)LI.push({a:pts.length,n:row.length,x0:row[0][0],x1:row[row.length-1][0],y0:y-sz[i]*1.05,y1:y+sz[i]*.35});for(const r of row)pts.push(r)});
+const tx=document.createElement('canvas');tx.width=w;tx.height=h;const tc=tx.getContext('2d');tc.fillStyle='#f6dc9a';let shown=0;
+const S=Array.from({length:110},()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.2+.2,p:Math.random()*6})),
+D=Array.from({length:16},()=>({x:Math.random()*w,y:Math.random()*h,r:2+Math.random()*5,v:.3+Math.random()*.5})),
+FG=Array.from({length:6},()=>({x:Math.random()*w,y:h*(.45+Math.random()*.5),r:Math.max(w,h)*(.25+Math.random()*.2),v:.12+Math.random()*.12})),P=[],K=[];
+const t0=performance.now(),cl=v=>Math.max(0,Math.min(1,v)),blur=('filter' in c);
+T(()=>I.classList.add('lit'),300);T(()=>I.classList.add('wiz'),1300);T(()=>I.classList.add('flash'),7800);T(end,9300);
+function loop(n){const t=n-t0,z=1+.08*cl(t/7000)+(t>7000?.45*Math.pow(cl((t-7000)/1700),2):0);sc.style.transform=`scale(${z})`;
+const hx=w/2+(hx0-w/2)*z,hy=h+(hy0-h)*z;c.globalCompositeOperation='source-over';c.clearRect(0,0,w,h);
+for(const f of FG){f.x+=f.v;if(f.x>w+f.r)f.x=-f.r;const g=c.createRadialGradient(f.x,f.y,0,f.x,f.y,f.r);g.addColorStop(0,'rgba(170,185,225,.07)');g.addColorStop(1,'rgba(170,185,225,0)');c.fillStyle=g;c.fillRect(f.x-f.r,f.y-f.r,f.r*2,f.r*2)}
+const bs=cl(t/1500);for(const s of S){c.globalAlpha=bs*(.15+.45*Math.abs(Math.sin(t/900+s.p)));c.fillStyle='#ece3cf';c.beginPath();c.arc(s.x,s.y,s.r,0,7);c.fill()}
+c.fillStyle='#d8cdb0';for(const d of D){d.y-=d.v;d.x+=Math.sin(t/2000+d.r)*.2;if(d.y<-10)d.y=h+10;c.globalAlpha=.07+.05*Math.sin(t/700+d.r);c.beginPath();c.arc(d.x,d.y,d.r,0,7);c.fill()}
+/* spiral */
+const us=cl((t-2000)/1700),u=cl((t-3900)/2400),N=Math.floor(pts.length*u);let tip=[hx+70,hy-85];
+if(t>2000&&t<3900){const a=-1.57+us*6.9,r=R*(.45+.55*us);tip=[cx+Math.cos(a)*r,cy+Math.sin(a)*r];if(us<1)P.push({x:tip[0],y:tip[1]})}
+c.globalAlpha=.75;c.fillStyle='#e3b866';P.forEach((p,i)=>{c.beginPath();c.arc(p.x,p.y,1.6,0,7);c.fill();if(i%14==0){c.fillRect(p.x-5,p.y-.5,10,1);c.fillRect(p.x-.5,p.y-5,1,10)}});
+c.strokeStyle='#e3b866';c.lineWidth=.8;if(P.length>40)for(let i=0;i+22<P.length;i+=5){c.globalAlpha=.28;c.beginPath();c.moveTo(P[i].x,P[i].y);c.lineTo(P[i+22].x,P[i+22].y);c.stroke()}
+if(t>1600&&t<7800){if(t>=3900&&N>0)tip=pts[N-1];for(;shown<N;shown++){if(shown%9==0)K.push({x:pts[shown][0],y:pts[shown][1],vx:(Math.random()-.5)*.8,vy:-Math.random()*.7,l:1})}
+const I0=cl((t-1600)/1000);if(Math.random()<.2+I0*.6)K.push({x:tip[0],y:tip[1],vx:(Math.random()-.5),vy:-Math.random()*.8,l:1});
+const dx=tip[0]-hx,dy=tip[1]-hy,d=Math.hypot(dx,dy)||1,Lw=Math.min(d,110*z),ex=hx+dx/d*Lw,ey=hy+dy/d*Lw;c.globalAlpha=1;c.lineCap='round';
+c.strokeStyle='#3b2616';c.lineWidth=4.5*z;c.beginPath();c.moveTo(hx,hy);c.lineTo(ex,ey);c.stroke();c.strokeStyle='#8c6b44';c.lineWidth=1.3;c.beginPath();c.moveTo(hx,hy-1);c.lineTo(ex,ey-1);c.stroke();
+c.globalCompositeOperation='lighter';const gl=(x,y,r,a)=>{const g=c.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,`rgba(255,196,100,${a})`);g.addColorStop(1,'rgba(255,170,60,0)');c.fillStyle=g;c.fillRect(x-r,y-r,r*2,r*2)};
+gl(ex,ey,40+I0*90,.12+.25*I0);gl(tip[0],tip[1],30+(us+u)*70,.15+.2*(us+u)/2);c.fillStyle='#fff1c4';c.globalAlpha=1;c.beginPath();c.arc(tip[0],tip[1],3.5,0,7);c.fill();c.globalCompositeOperation='source-over'}
+c.globalAlpha=1;for(const l of LI){const f=cl((N-l.a)/l.n);if(f>0){c.save();c.beginPath();c.rect(l.x0-30,l.y0,(l.x1-l.x0+60)*f,l.y1-l.y0);c.clip();c.drawImage(tl,0,0);c.restore()}}
+c.fillStyle='#f6dc9a';for(let i=K.length-1;i>=0;i--){const k=K[i];k.x+=k.vx;k.y+=k.vy;k.l-=.018;if(k.l<=0){K.splice(i,1);continue}c.globalAlpha=k.l;c.fillRect(k.x,k.y,1.5,1.5)}
+raf=requestAnimationFrame(loop)}
+raf=requestAnimationFrame(loop)}
+let seen=0;try{seen=localStorage.getItem('fn_intro')}catch(e){}
+document.getElementById('skip').onclick=end;addEventListener('keydown',e=>{if(e.key=='Escape')end()});
+document.getElementById('replay').onclick=e=>{e.preventDefault();play()};
+document.getElementById('rp').onclick=()=>play();play();
+})();
+</script></body></html>
