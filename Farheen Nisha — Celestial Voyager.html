@@ -99,6 +99,17 @@ details[open] .body{animation:unf .5s ease}
 #fl{position:absolute;left:50%;top:42%;width:60vmax;height:60vmax;margin:-30vmax;border-radius:50%;background:radial-gradient(circle,#fff4cf,#e3b866 30%,transparent 65%);transform:scale(0);opacity:0}.flash #fl{transform:scale(3.2);opacity:1;transition:transform 1s ease-in,opacity .3s}
 #skip{position:absolute;right:16px;bottom:calc(14px + env(safe-area-inset-bottom,0px));background:none;border:0;color:#a9a7b8;font:12px Inter,sans-serif;letter-spacing:.15em;opacity:.6;z-index:3;padding:8px}#skip:hover{opacity:1}
 #hint{position:fixed;bottom:28px;left:0;right:0;text-align:center;font:italic 20px 'IM Fell English',serif;color:var(--gold);opacity:0;pointer-events:none;z-index:60}#hint.show{animation:ht 4.5s ease}@keyframes ht{20%,70%{opacity:1}}
+html,body{max-width:100%}.hero{min-height:92svh}details summary{flex-wrap:wrap}.cons{overflow:hidden}#q{font-size:16px}.node{max-width:96px;line-height:1.3}
+@media(max-width:900px){section{padding:70px 18px}.board{padding:16px;gap:20px}}
+@media(max-width:700px){
+body{font-size:16px}nav{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;gap:4px 14px;padding-left:14px;padding-right:14px;scrollbar-width:none}nav::-webkit-scrollbar{display:none}nav a{white-space:nowrap;padding:10px 4px;font-size:11px}
+section{padding:56px 16px}h2{font-size:clamp(28px,8vw,40px)}.hero{padding:30px 16px}.hero .btn{display:block;margin:10px auto;max-width:280px}
+.cons{height:640px}.node{font-size:10px;max-width:78px;padding:10px 4px}.core{font-size:20px}#tip{font-size:18px}
+.note{font-size:22px}.log{gap:6px}.log h3{font-size:21px}.rooms button{flex:1 1 40%;padding:12px 8px}.book{width:calc(50% - 6px);min-height:170px}
+.between{padding:90px 18px}.castle{height:45%}.moon{top:5%;right:6%}.frag.big{font-size:22px}.gal{grid-template-columns:repeat(2,1fr)}
+#rp{padding:6px 9px!important;font-size:11px!important;opacity:.8}footer{padding:70px 16px 70px}.obj{padding:10px 14px}#skip{padding:12px}}
+@media(max-width:380px){.rooms button{flex:1 1 100%}.hero h1{font-size:40px}}
+@media(hover:none){.note:hover{transform:none}.book:hover{transform:none}}
 .between{text-align:center;padding:140px 22px;background:linear-gradient(var(--bg),#1a0f1c 30%,#0b1a1a 65%,var(--bg))}
 .between p{font:italic clamp(22px,4vw,38px)/1.5 'IM Fell English',serif;margin:.6em auto;max-width:720px}
 .between p:nth-child(1){color:#d9c9a0}.between p:nth-child(2){color:#b7c3e8}.between p:nth-child(3){color:#e0b3bd}.between p:nth-child(4){color:#a8d6c1}
@@ -259,7 +270,7 @@ try{await Promise.race([document.fonts.load("700 80px Cinzel"),new Promise(r=>se
 if(!on)return;
 const w=cv.width=innerWidth,h=cv.height=innerHeight,sw=Math.min(300,w*.42),left=w*.08;wz.style.width=sw+'px';wz.style.left=left+'px';
 const hx0=left+sw*.81,hy0=h-sw*1.6*(1-108/320),cx=w>700?w*.6:w*.5,cy=h*.4,R=Math.min(w*(w>700?.3:.46),h*.36);
-const o=document.createElement('canvas');o.width=w;o.height=h;const oc=o.getContext('2d',{willReadFrequently:true}),F="Calibri,Arial,sans-serif",Ls=['LET THE MAGIC OF','CURIOSITY','BEGIN'],wd=[.9,1,.5],tw=R*1.5;
+const o=document.createElement('canvas');o.width=w;o.height=h;const oc=o.getContext('2d',{willReadFrequently:true}),F="Calibri,Arial,sans-serif",Ls=['LET THE MAGIC OF','CURIOSITY','BEGIN'],wd=[.9,1,.5],tw=w<700?w*.78:R*1.5;
 oc.font='700 100px '+F;const sz=Ls.map((t,i)=>Math.min(110,100*tw*wd[i]/oc.measureText(t).width));
 let y=cy-sz.reduce((a,b)=>a+b)*.5;const pts=[],tl=document.createElement('canvas');tl.width=w;tl.height=h;const lc=tl.getContext('2d'),LI=[];
 Ls.forEach((t,i)=>{y+=sz[i]*1.1;oc.clearRect(0,0,w,h);oc.font=`700 ${sz[i]}px ${F}`;oc.fillStyle='#fff';oc.textAlign='center';oc.fillText(t,cx,y);lc.font=oc.font;lc.textAlign='center';lc.fillStyle='#f6dc9a';lc.shadowColor='#c9a45c';lc.shadowBlur=22;lc.fillText(t,cx,y);lc.shadowBlur=0;lc.fillStyle='#ffeab8';lc.fillText(t,cx,y);
